@@ -28,5 +28,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    compile project(':my.lee.android.l')
+    compile 'com.timehop.stickyheadersrecyclerview:library:[0.4.3]@aar'
+//    compile 'my.lee.android.l:my.lee.android.l:1.0.0'
+//    compile 'my.lee.android.l:AdvRecyclerView:1.0.1'
+    compile project(':AdvRecyclerView')
 }

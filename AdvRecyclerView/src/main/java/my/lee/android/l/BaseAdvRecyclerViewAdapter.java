@@ -2,7 +2,6 @@ package my.lee.android.l;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
     protected Context context;
     private boolean isLoadMoreEnd;
     private boolean isEndVisible;
+    private AdvancedRecyclerView.OnItemClickListener onItemClickListener;
 
     public BaseAdvRecyclerViewAdapter(Context context, List<T> datas) {
         this.datas = datas;
@@ -28,9 +28,9 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
     @Override
     public final RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_LOAD_MORE) {
-            return new LoadMoreViewHolder(LayoutInflater.from(context).inflate(R.layout.view_load_more, parent, false));
+            return new LoadMoreViewHolder(LayoutInflater.from(context).inflate(R.layout.adv_view_load_more, parent, false));
         }
-        return getViewHolder(parent,viewType);
+        return getViewHolder(parent, viewType);
     }
 
     public void loadEnd() {
@@ -43,10 +43,19 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
     }
 
     @Override
-    public final void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public final void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (getItemViewType(position) == VIEW_TYPE_LOAD_MORE)
             bindLoadViewHolder((LoadMoreViewHolder) holder, position);
-        else bindData(holder, position);
+        else {
+            if (onItemClickListener != null)
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onItemClickListener.onItemClick(position);
+                    }
+                });
+            bindData(holder, position);
+        }
     }
 
     public abstract RecyclerView.ViewHolder getViewHolder(ViewGroup parent, int viewType);
@@ -58,7 +67,6 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
         holder.mTextView.setVisibility(!isLoadMoreEnd ? View.GONE : View.VISIBLE);
         if (isLoadMoreEnd && !isEndVisible)
             holder.itemView.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
-        Log.v("test", "position=" + position + " adapter position=" + holder.getAdapterPosition());
     }
 
     @Override
@@ -82,6 +90,10 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
         return datas.size();
     }
 
+    public void setOnItemClickListener(AdvancedRecyclerView.OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     static class LoadMoreViewHolder extends RecyclerView.ViewHolder {
         ProgressBar mProgress;
         TextView mTextView;
@@ -92,5 +104,6 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
             mTextView = (TextView) itemView.findViewById(R.id.more_text);
         }
     }
+
 
 }

@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
+
 import java.util.List;
 
 import my.lee.android.l.BaseAdvRecyclerViewAdapter;
@@ -16,7 +18,7 @@ import my.lee.android.l.BaseAdvRecyclerViewAdapter;
  * Date: 2016-03-15
  * Time: 10:40
  */
-public class TestAdvRecyclerViewAdapter extends BaseAdvRecyclerViewAdapter<Integer> {
+public class TestAdvRecyclerViewAdapter extends BaseAdvRecyclerViewAdapter<Integer> implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
 
     public TestAdvRecyclerViewAdapter(Context context, List<Integer> datas) {
         super(context, datas);
@@ -30,11 +32,32 @@ public class TestAdvRecyclerViewAdapter extends BaseAdvRecyclerViewAdapter<Integ
 
     @Override
     public void bindData(RecyclerView.ViewHolder holder, int position) {
-        bindDataViewHolder((MyViewHolder) holder,datas,position);
+        bindDataViewHolder((MyViewHolder) holder, datas, position);
     }
 
     private void bindDataViewHolder(MyViewHolder holder, List<Integer> datas, int position) {
         holder.mTextView.setText(datas.get(position) + "");
+    }
+
+    @Override
+    public long getHeaderId(int position) {
+        if (position==datas.size()){
+            return -1;
+        }
+        return datas.get(position);
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+        return new RecyclerView.ViewHolder(view) {
+        };
+    }
+
+    @Override
+    public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
+        TextView textView = (TextView) holder.itemView;
+        textView.setText(getHeaderId(position) + "");
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {

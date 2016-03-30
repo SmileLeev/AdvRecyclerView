@@ -1,5 +1,8 @@
 package my.lee.android.l;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -31,6 +34,7 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
     private int mEmptyId;
     private int mProgressId;
     private int mErrorId;
+    private boolean endVisible;
     private BaseAdvRecyclerViewAdapter mAdapter;
 
     public AdvancedRecyclerView(Context context) {
@@ -134,6 +138,38 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
         mSwipeEmpty.setVisibility(isShow ? View.INVISIBLE : View.VISIBLE);
     }
 
+    public void showDataWidthAnim() {
+        ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                mSwipe.setAlpha(value);
+                mSwipeEmpty.setAlpha(1 - value);
+            }
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mSwipe.setAlpha(0);
+                mSwipeEmpty.setAlpha(1);
+                mSwipe.setVisibility(View.VISIBLE);
+                mSwipeEmpty.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mSwipeEmpty.setVisibility(View.INVISIBLE);
+                mSwipeEmpty.setAlpha(1);
+            }
+        });
+        animator.setDuration(1000);
+        animator.start();
+    }
+
     public void setOnRefreshListener(OnRefreshListener listener) {
         mRefreshListener = listener;
     }
@@ -145,8 +181,9 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
     public void setAdapter(BaseAdvRecyclerViewAdapter adapter) {
         this.mAdapter = adapter;
         mRecyclerView.setAdapter(adapter);
+        mAdapter.setEndVisible(endVisible);
         if (mAdapter.getAdvItemCount() > 0) {
-            showData(true);
+            showDataWidthAnim();
         }
     }
 
@@ -168,7 +205,7 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
     }
 
     public void setEndVisible(boolean visible) {
-        mAdapter.setEndVisible(visible);
+        this.endVisible = visible;
     }
 
     public void setRefreshing(boolean isRefresh) {

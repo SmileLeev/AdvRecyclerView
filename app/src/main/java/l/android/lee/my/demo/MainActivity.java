@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDate() {
         datas = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            datas.add(i);
-        }
+//        for (int i = 0; i < 10; i++) {
+//            datas.add(i);
+//        }
         adapter = new TestAdvRecyclerViewAdapter(this, datas);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.postDelayed(new Runnable() {
@@ -102,17 +102,18 @@ public class MainActivity extends AppCompatActivity {
     private void loadMore() {
         if (isLoading)
             return;
+        mRecyclerView.setLoadingMore(false);
         isLoading = true;
-        if (datas.size() > 50) {
+        if (datas.size() > 1) {
             adapter.loadEnd();
             return;
         }
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1; i++) {
             datas.add(i);
         }
-        mRecyclerView.getRecyclerView().getAdapter().notifyItemRangeInserted(datas.size() - 3, 3);
+//        mRecyclerView.getRecyclerView().getAdapter().notifyItemRangeInserted(datas.size() - 3, 3);
+        mRecyclerView.notifyDataSetChanged();
         isLoading = false;
-        mRecyclerView.setLoadingMore(false);
     }
 
     @Override

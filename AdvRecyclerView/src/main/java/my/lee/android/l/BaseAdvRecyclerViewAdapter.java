@@ -69,6 +69,10 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
             holder.itemView.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
     }
 
+    public boolean isLoadMoreEnd(){
+        return isLoadMoreEnd;
+    }
+
     @Override
     public final int getItemViewType(int position) {
         if (position == getItemCount() - 1) {

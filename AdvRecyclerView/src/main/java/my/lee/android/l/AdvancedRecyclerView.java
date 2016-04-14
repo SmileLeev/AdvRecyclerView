@@ -254,7 +254,7 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
             post(new Runnable() {
                 @Override
                 public void run() {
-                    if (mAdapter.getItemCount() == mRecyclerView.getLayoutManager().getChildCount())
+                    if (!mAdapter.isLoadMoreEnd() && mAdapter.getItemCount() == mRecyclerView.getLayoutManager().getChildCount())
                         setLoadingMore(true);
                 }
             });

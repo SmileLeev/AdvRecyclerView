@@ -32,4 +32,5 @@ dependencies {
 //    compile 'my.lee.android.l:my.lee.android.l:1.0.0'
 //    compile 'my.lee.android.l:AdvRecyclerView:1.0.1'
     compile project(':AdvRecyclerView')
+//    compile 'my.lee.android.l:AdvRecyclerView:1.0.1'
 }

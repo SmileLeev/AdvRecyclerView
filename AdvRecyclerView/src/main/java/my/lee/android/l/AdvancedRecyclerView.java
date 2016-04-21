@@ -87,7 +87,11 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
                 int visibleCount = recyclerView.getChildCount();
                 int itemCount = lm.getItemCount();
                 int firstPosition = lm.findFirstVisibleItemPosition();
-                if (itemCount > 0 && visibleCount + firstPosition == itemCount && mLoadMoreListener != null) {
+                if (itemCount > 0 && visibleCount + firstPosition == itemCount
+                        && mLoadMoreListener != null) {
+                    //结束加载
+                    if (mAdapter != null && mAdapter.isLoadMoreEnd())
+                        return;
                     mLoadMoreListener.onLoadMore();
                 }
             }

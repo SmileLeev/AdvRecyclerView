@@ -21,6 +21,7 @@ import java.util.List;
 import my.lee.android.l.AdvancedRecyclerView;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String TAG_MAIN_TEST = "MainTest";
     private int count;
 
     private AdvancedRecyclerView mRecyclerView;
@@ -53,14 +54,8 @@ public class MainActivity extends AppCompatActivity {
 //            datas.add(i);
 //        }
         adapter = new TestAdvRecyclerViewAdapter(this, datas);
+        mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mRecyclerView.setAdapter(adapter);
-                initSticky();
-            }
-        }, 3000);
         mRecyclerView.setOnLoadMoreListener(new AdvancedRecyclerView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -73,7 +68,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mRecyclerView.setEndVisible(true);
-
+        mRecyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadMore();
+            }
+        },3000);
     }
 
     private void initSticky() {
@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadMore() {
+//        Log.v(TAG_MAIN_TEST, "loadmore");
         if (isLoading)
             return;
         mRecyclerView.setLoadingMore(false);
@@ -111,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < 1; i++) {
             datas.add(i);
         }
-//        mRecyclerView.getRecyclerView().getAdapter().notifyItemRangeInserted(datas.size() - 3, 3);
         mRecyclerView.notifyDataSetChanged();
         isLoading = false;
     }
@@ -129,11 +129,19 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            switch (count%4){
-                case 0:mRecyclerView.showError();break;
-                case 1:mRecyclerView.showEmpty();break;
-                case 2:mRecyclerView.showProgress();break;
-                case 3:mRecyclerView.showDataWidthAnim();break;
+            switch (count % 4) {
+                case 0:
+                    mRecyclerView.showError();
+                    break;
+                case 1:
+                    mRecyclerView.showEmpty();
+                    break;
+                case 2:
+                    mRecyclerView.showProgress();
+                    break;
+                case 3:
+                    mRecyclerView.showDataWidthAnim();
+                    break;
             }
             count++;
             return true;

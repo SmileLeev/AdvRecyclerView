@@ -32,6 +32,7 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
     private OnRefreshListener mRefreshListener;
     private OnLoadMoreListener mLoadMoreListener;
     private OnItemClickListener mItemClickListener;
+    private RecyclerView.OnScrollListener mOnScrollListener;
 
     private int mEmptyId;
     private int mProgressId;
@@ -96,7 +97,15 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
                 }
             }
         });
+        if (mOnScrollListener != null)
+            mRecyclerView.addOnScrollListener(mOnScrollListener);
         showProgress();
+    }
+
+    public void addOnScrollListener(RecyclerView.OnScrollListener onScrollListener) {
+        mOnScrollListener = onScrollListener;
+        if (mRecyclerView != null)
+            mRecyclerView.addOnScrollListener(onScrollListener);
     }
 
     public void showError() {
@@ -133,6 +142,18 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
         if (mVewProgress.getChildCount() <= 0) {
             LayoutInflater.from(getContext()).inflate(mProgressId, mVewProgress);
         }
+    }
+
+    public FrameLayout getViewEmpty() {
+        return mViewEmpty;
+    }
+
+    public FrameLayout getVewProgress() {
+        return mVewProgress;
+    }
+
+    public FrameLayout getViewError() {
+        return mViewError;
     }
 
     public void loadEnd() {
@@ -193,7 +214,6 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
         if (mAdapter.getAdvItemCount() > 0) {
             showDataWidthAnim();
         }
-        setLoadingMore(false);
     }
 
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {

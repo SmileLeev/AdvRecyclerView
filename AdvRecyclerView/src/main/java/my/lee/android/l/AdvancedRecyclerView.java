@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.ColorInt;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -142,6 +143,12 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
         if (mVewProgress.getChildCount() <= 0) {
             LayoutInflater.from(getContext()).inflate(mProgressId, mVewProgress);
         }
+    }
+
+    @ColorInt
+    public void setSwipeColor(int... colors) {
+        mSwipe.setColorSchemeColors(colors);
+        mSwipeEmpty.setColorSchemeColors(colors);
     }
 
     public FrameLayout getViewEmpty() {

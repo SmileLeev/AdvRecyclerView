@@ -65,11 +65,13 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
     private void bindLoadViewHolder(LoadMoreViewHolder holder, int position) {
         holder.mProgress.setVisibility(isLoadMoreEnd ? View.GONE : View.VISIBLE);
         holder.mTextView.setVisibility(!isLoadMoreEnd ? View.GONE : View.VISIBLE);
-        if (isLoadMoreEnd && !isEndVisible)
-            holder.itemView.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
+        if (isLoadMoreEnd && !isEndVisible) {
+            ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+            layoutParams.height = 1;
+        }
     }
 
-    public boolean isLoadMoreEnd(){
+    public boolean isLoadMoreEnd() {
         return isLoadMoreEnd;
     }
 

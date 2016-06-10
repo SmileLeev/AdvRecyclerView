@@ -1,5 +1,6 @@
 package l.android.lee.my.demo;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -73,7 +74,19 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 loadMore();
             }
-        },3000);
+        }, 3000);
+        mRecyclerView.setSwipeColor(Color.BLUE, Color.DKGRAY);
+        mRecyclerView.setOnRefreshListener(new AdvancedRecyclerView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRecyclerView.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
     }
 
     private void initSticky() {
@@ -109,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             adapter.loadEnd();
             return;
         }
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             datas.add(i);
         }
         mRecyclerView.notifyDataSetChanged();

@@ -29,6 +29,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
     compile 'com.timehop.stickyheadersrecyclerview:library:[0.4.3]@aar'
-//    compile project(':AdvRecyclerView')
-    compile 'my.lee.android.l:AdvRecyclerView:1.0.3'
+    compile project(':AdvRecyclerView')
+//    compile 'my.lee.android.l:AdvRecyclerView:1.0.3'
 }

@@ -16,5 +16,6 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:adv_layout_progress="@layout/view_progress_test" />
+        app:adv_layout_progress="@layout/view_progress_test"
+        app:adv_layout_load_more="@layout/load_more"/>
 </RelativeLayout>

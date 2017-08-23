@@ -5,6 +5,7 @@
         <attr name="adv_layout_empty" format="reference" />
         <attr name="adv_layout_progress" format="reference" />
         <attr name="adv_layout_error" format="reference" />
+        <attr name="adv_layout_load_more" format="reference" />
     </declare-styleable>
 
 

@@ -38,6 +38,7 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
     private int mEmptyId;
     private int mProgressId;
     private int mErrorId;
+    private int mLordMoreId;
     private boolean endVisible;
     private BaseAdvRecyclerViewAdapter mAdapter;
     private int gridCount;
@@ -65,6 +66,7 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
             mEmptyId = a.getResourceId(R.styleable.advrecyclerview_adv_layout_empty, 0);
             mProgressId = a.getResourceId(R.styleable.advrecyclerview_adv_layout_progress, 0);
             mErrorId = a.getResourceId(R.styleable.advrecyclerview_adv_layout_error, 0);
+            mLordMoreId = a.getResourceId(R.styleable.advrecyclerview_adv_layout_load_more, 0);
         } finally {
             a.recycle();
         }
@@ -145,8 +147,7 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
         }
     }
 
-    @ColorInt
-    public void setSwipeColor(int... colors) {
+    public void setSwipeColor(@ColorInt int... colors) {
         mSwipe.setColorSchemeColors(colors);
         mSwipeEmpty.setColorSchemeColors(colors);
     }
@@ -166,6 +167,11 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
     public void loadEnd() {
         if (mAdapter != null)
             mAdapter.loadEnd();
+    }
+
+    public void showEnd() {
+        if (mAdapter != null)
+            mAdapter.showEnd();
     }
 
     public void showData(boolean isShow) {
@@ -216,6 +222,8 @@ public class AdvancedRecyclerView extends FrameLayout implements SwipeRefreshLay
     public void setAdapter(BaseAdvRecyclerViewAdapter adapter) {
         this.mAdapter = adapter;
         mAdapter.setOnItemClickListener(mItemClickListener);
+        if (mLordMoreId > 0)
+            mAdapter.setLordMoreViewLayout(mLordMoreId);
         mRecyclerView.setAdapter(adapter);
         mAdapter.setEndVisible(endVisible);
         if (mAdapter.getAdvItemCount() > 0) {

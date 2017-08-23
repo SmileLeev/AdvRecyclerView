@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setOnRefreshListener(new AdvancedRecyclerView.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mRecyclerView.showEnd();
                 mRecyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {

@@ -2,7 +2,7 @@
 //
 //android {
 //    compileSdkVersion 23
-//    buildToolsVersion "23.0.3"
+//    buildToolsVersion "25.0.2"
 //
 //    defaultConfig {
 //        minSdkVersion 14
@@ -24,20 +24,20 @@
 //    compile 'com.android.support:appcompat-v7:23.3.0'
 //    compile 'com.android.support:design:23.3.0'
 //}
-
+// gradle bintrayUpload
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-version = "1.0.6"
+version = "1.0.9"
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "25.0.2"
     resourcePrefix "lee"
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 106
-        versionName "1.0.6"
+        versionCode 109
+        versionName version
     }
     buildTypes {
         release {

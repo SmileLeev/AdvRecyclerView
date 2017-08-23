@@ -1,6 +1,7 @@
 package my.lee.android.l;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
     private boolean isLoadMoreEnd;
     private boolean isEndVisible;
     private AdvancedRecyclerView.OnItemClickListener onItemClickListener;
+    private int lordMoreViewLayout = R.layout.adv_view_load_more;
 
     public BaseAdvRecyclerViewAdapter(Context context, List<T> datas) {
         this.datas = datas;
@@ -28,7 +30,7 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
     @Override
     public final RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_LOAD_MORE) {
-            return new LoadMoreViewHolder(LayoutInflater.from(context).inflate(R.layout.adv_view_load_more, parent, false));
+            return new LoadMoreViewHolder(LayoutInflater.from(context).inflate(lordMoreViewLayout, parent, false));
         }
         return getViewHolder(parent, viewType);
     }
@@ -38,12 +40,17 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
         notifyItemChanged(getItemCount() - 1);
     }
 
+    public void showEnd() {
+        isLoadMoreEnd = false;
+        notifyItemChanged(getItemCount() - 1);
+    }
+
     public void setEndVisible(boolean visible) {
         isEndVisible = visible;
     }
 
     @Override
-    public final void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public final void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == VIEW_TYPE_LOAD_MORE)
             bindLoadViewHolder((LoadMoreViewHolder) holder, position);
         else {
@@ -51,7 +58,7 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onItemClickListener.onItemClick(position);
+                        onItemClickListener.onItemClick(holder.getAdapterPosition());
                     }
                 });
             bindData(holder, position);
@@ -65,9 +72,11 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
     private void bindLoadViewHolder(LoadMoreViewHolder holder, int position) {
         holder.mProgress.setVisibility(isLoadMoreEnd ? View.GONE : View.VISIBLE);
         holder.mTextView.setVisibility(!isLoadMoreEnd ? View.GONE : View.VISIBLE);
+        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
         if (isLoadMoreEnd && !isEndVisible) {
-            ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
             layoutParams.height = 1;
+        } else {
+            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
     }
 
@@ -98,6 +107,11 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
 
     public void setOnItemClickListener(AdvancedRecyclerView.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setLordMoreViewLayout(@LayoutRes int lordMoreViewLayout) {
+        if (lordMoreViewLayout > 0)
+            this.lordMoreViewLayout = lordMoreViewLayout;
     }
 
     static class LoadMoreViewHolder extends RecyclerView.ViewHolder {

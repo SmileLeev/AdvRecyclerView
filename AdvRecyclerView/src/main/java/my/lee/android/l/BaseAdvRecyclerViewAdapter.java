@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.lang.ref.SoftReference;
 import java.util.List;
 
 public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -16,7 +17,7 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
     static final int VIEW_TYPE_LOAD_MORE = 0x01111;
 
     protected List<T> datas;
-    protected Context context;
+    protected SoftReference<Context> contextSof;
     private boolean isLoadMoreEnd;
     private boolean isEndVisible;
     private AdvancedRecyclerView.OnItemClickListener onItemClickListener;
@@ -24,13 +25,15 @@ public abstract class BaseAdvRecyclerViewAdapter<T> extends RecyclerView.Adapter
 
     public BaseAdvRecyclerViewAdapter(Context context, List<T> datas) {
         this.datas = datas;
-        this.context = context;
+        this.contextSof = new SoftReference<>(context);
     }
 
     @Override
     public final RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_LOAD_MORE) {
-            return new LoadMoreViewHolder(LayoutInflater.from(context).inflate(lordMoreViewLayout, parent, false));
+            return new LoadMoreViewHolder(
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(lordMoreViewLayout, parent, false));
         }
         return getViewHolder(parent, viewType);
     }
